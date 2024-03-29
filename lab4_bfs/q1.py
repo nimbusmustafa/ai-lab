@@ -30,7 +30,7 @@ class Graph:
             # print(current_node)
             result.append(current_node)
 
-            for neighbor in self.graph.get(current_node, []):
+            for neighbor in self.graph[current_node]:
                 in_degree[neighbor] -= 1
                 if in_degree[neighbor] == 0:
                     queue.append(neighbor)

@@ -8,32 +8,31 @@ class Graph:
         stack.append(curr)
         return stack
 
-if __name__ == '__main__':
-    adList = {
-        'A': ['D','C','B'],
-        'B': ['E','F'],
-        'C': ['A','F'],
-        'D': ['A'],
-        'E': ['B'],
+adList = {
+                'A': ['D','C','B'],
+                'B': ['E','F'],
+                'C': ['A','F'],
+                'D': ['A'],
+                'E': ['B'],
 
-        'F': ['B', 'C'],
-    }
+                'F': ['B', 'C'],
+            }
 
-    vertices = []
-    for node, neighbors in adList.items():
+vertices = []
+for node, neighbors in adList.items():
         if node not in vertices:
-            vertices.append(node)
+                    vertices.append(node)
         for neighbor in neighbors:
-            if neighbor not in vertices:
-                vertices.append(neighbor)
+                    if neighbor not in vertices:
+                        vertices.append(neighbor)
 
-    visit = []
-    stack = []
-    ob = Graph()
+visit = []
+stack = []
+ob = Graph()
 
-    for vertex in vertices:
-        if vertex not in visit:
-            stack = ob.topological(adList, visit, stack, vertex)
+for vertex in vertices:
+                if vertex not in visit:
+                    stack = ob.topological(adList, visit, stack, vertex)
 
-    stack = stack[::-1]
-    print(stack)
+stack = stack[::-1]
+print(stack)

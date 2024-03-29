@@ -1,6 +1,6 @@
 class Graph:
-    def __init__(self, graph_dict=None):
-        self.graph = graph_dict if graph_dict else {}
+    def __init__(self, graph_dict):
+        self.graph = graph_dict 
 
 
     def uniform_cost_search(self, start, goal):
@@ -13,15 +13,15 @@ class Graph:
 
             if current_node in visited:
                 continue
-            if current_node == goal and len(path) > 1:
-             return path, current_cost
+            # if current_node == goal and len(path) > 1:
+            #  return path, current_cost
             visited.append(current_node)
             path = path + [current_node]
 
             if current_node == goal:
                 return path, current_cost
 
-            for neighbor, edge_cost in self.graph.get(current_node, []):
+            for neighbor, edge_cost in self.graph[current_node]:
                 if neighbor not in visited:
                     priority_queue.append((current_cost + edge_cost, neighbor, path))
 

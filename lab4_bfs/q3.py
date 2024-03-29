@@ -3,9 +3,19 @@ def calculate_total_distance(route, adjacency_list):
     for i in range(len(route) - 1):
         current_city = route[i]
         next_city = route[i + 1]
-        distance = next(dist for neighbor, dist in adjacency_list[current_city] if neighbor == next_city)
-        total_distance += distance
-    total_distance += next(dist for neighbor, dist in adjacency_list[route[-1]] if neighbor == route[0])
+        for neighbor, dist in adjacency_list[current_city]:
+            if neighbor == next_city:
+                total_distance += dist
+                break
+
+    # Handle the distance from the last city back to the first city
+    last_city = route[-1]
+    first_city = route[0]
+    for neighbor, dist in adjacency_list[last_city]:
+        if neighbor == first_city:
+            total_distance += dist
+            break
+
     return total_distance
 
 def traveling_salesman_dfs(graph, start):
