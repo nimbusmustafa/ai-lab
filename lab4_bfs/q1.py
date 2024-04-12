@@ -11,7 +11,7 @@ class Graph:
 
     def topological_sort_bfs(self):
         in_degree = {}
-        for node, degree in self.graph.items():
+        for node, _ in self.graph.items():
             in_degree[node] = 0
 
         for neighbors in self.graph.values():
