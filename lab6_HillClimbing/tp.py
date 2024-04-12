@@ -22,7 +22,7 @@ def gen_neighbors(state):
 
 def hill_climbing():
     n = 8
-    current_state = [0,0,0,0,0,0,0,0]
+    current_state = [0,1,2,3,4,5,6,7]
     path = [current_state.copy()]
     cost = [heuristic(current_state)]
 

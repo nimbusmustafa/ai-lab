@@ -3,7 +3,7 @@ from random import randint
 N = 8
 
 def configureRandomly():
-    return [randint(0, N-1) for _ in range(N)]
+    return [0,1,2,3,4,5,6,7]
 
 def printBoard(board):
     for row in board:

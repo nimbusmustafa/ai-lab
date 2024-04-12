@@ -1,20 +1,16 @@
-from queue import Queue
-
-
 class NQueens:
 
     def __init__(self, size):
         self.size = size
 
-   
     def solve_bfs(self):
         if self.size < 1:
             return []
         solutions = []
-        queue = Queue()
-        queue.put([])
-        while not queue.empty():
-            solution = queue.get()
+        queue = []
+        queue.append([])
+        while queue:
+            solution = queue.pop(0)
             if self.conflict(solution):
                 continue
             row = len(solution)
@@ -25,7 +21,7 @@ class NQueens:
                 queen = (row, col)
                 queens = solution.copy()
                 queens.append(queen)
-                queue.put(queens)
+                queue.append(queens)
         return solutions
 
     def conflict(self, queens):
@@ -40,11 +36,9 @@ class NQueens:
     def print(self, queens):
         for i in range(self.size):
             for j in range(self.size):
-               if (i, j) in queens:
-                print(f'{j}, ', end='')
+                if (i, j) in queens:
+                    print(f'{j}, ', end='')
         print()    
-        
-
 
 def main():
     print('.: N-Queens Problem :.')
@@ -57,7 +51,6 @@ def main():
             print('BFS Solution %d:' % (i + 1))
             n_queens.print(solution)
     print('Total BFS solutions: %d' % len(bfs_solutions))
-
 
 if __name__ == '__main__':
     main()
