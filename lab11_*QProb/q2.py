@@ -11,7 +11,9 @@ class NQueens:
         queue.append([])
         while queue:
             solution = queue.pop(0)
+            print(solution)
             if self.conflict(solution):
+                # print("loda")
                 continue
             row = len(solution)
             if row == self.size:
@@ -19,6 +21,8 @@ class NQueens:
                 continue
             for col in range(self.size):
                 queen = (row, col)
+                # print(" ")
+                # print(queen)
                 queens = solution.copy()
                 queens.append(queen)
                 queue.append(queens)
