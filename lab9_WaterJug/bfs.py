@@ -2,35 +2,20 @@ def genlist(x, y, max_x, max_y):
     adList = []
     if x < max_x:
         adList.append((max_x, y))
-        # print("1")
     if y < max_y:
         adList.append((x, max_y))
-        # print("2")
-
     if x > 0:
         adList.append((0, y))
-        # print("3")
-
     if y > 0:
-        # print("4")
-
         adList.append((x, 0))
     if x + y >= max_x and y > 0:
         adList.append((max_x, x + y - max_x))
-        # print("5")
-
     if x + y >= max_y and x > 0:
         adList.append((x + y - max_y, max_y))
-        # print("6")
-
     if x + y <= max_x and y > 0:
         adList.append((x + y, 0))
-        # print("7")
-# 
     if x + y <= max_y and x > 0:
         adList.append((0, x + y))
-        # print("8")
-
   
     return adList
 
@@ -48,7 +33,7 @@ def bfs(max_x, max_y, target):
             path = [step for step in curr[1]]
             path.append(x)
             node = [x, path]
-            print(node)
+            # print(node)
             queue.append(node)
     print("Target configuration cannot be reached.")
 

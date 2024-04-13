@@ -19,12 +19,16 @@ adList = {
             }
 
 vertices = []
-for node, neighbors in adList.items():
-        if node not in vertices:
+# for node, neighbors in adList.items():
+#         if node not in vertices:
+#                     vertices.append(node)
+#         for neighbor in neighbors:
+#                     if neighbor not in vertices:
+#                         vertices.append(neighbor)
+
+for node in adList.keys():
                     vertices.append(node)
-        for neighbor in neighbors:
-                    if neighbor not in vertices:
-                        vertices.append(neighbor)
+
 
 visit = []
 stack = []

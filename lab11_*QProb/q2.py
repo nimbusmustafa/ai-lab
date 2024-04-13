@@ -13,7 +13,7 @@ class NQueens:
             solution = queue.pop(0)
             print(solution)
             if self.conflict(solution):
-                # print("loda")
+                print("loda")
                 continue
             row = len(solution)
             if row == self.size:
@@ -26,6 +26,7 @@ class NQueens:
                 queens = solution.copy()
                 queens.append(queen)
                 queue.append(queens)
+                print(f"queue= {queue}")
         return solutions
 
     def conflict(self, queens):

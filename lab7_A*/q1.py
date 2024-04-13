@@ -27,9 +27,7 @@ class Graph:
         parents = {start_node: start_node}
 
         while open_list:
-            n = open_list.pop(0)  # Pop the first node from open_list
-
-            # Iterate over open_list without updating n
+            n = open_list.pop(0)  
             for v in open_list:
                 if g[v] + self.h(v) < g[n] + self.h(n):
                     n = v
@@ -39,7 +37,6 @@ class Graph:
                 return None
 
             if n == stop_node:
-                # Path found, reconstruct the path from stop_node to start_node
                 reconst_path = []
                 while parents[n] != n:
                     reconst_path.append(n)

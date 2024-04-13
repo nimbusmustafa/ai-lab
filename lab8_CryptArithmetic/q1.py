@@ -1,39 +1,46 @@
-def cryptic(values, stored):
-    if -1 not in stored.values():
-        summing = []
-        for val in values:
-            num = 0
-            for x in val:
-                num = (10 * num) + stored[x]
-            summing.append(num)
-        data = summing[:len(summing) - 1]
-        if sum(data) == summing[-1]:
-            print('yes')
-            print(summing)
-            exit()
-        else:
-            return
-    for i in range(0, 10):
-        if i in stored.values():
-            continue
-        keys = sorted(stored.keys())
-        x = ''
-        for x in keys:
-            if stored[x] == -1:
-                stored[x] = i
-                break
-        cryptic(values, stored)
-        stored[x] = -1
-    return
+def solve_cryptarithmetic(lhs, rhs):
+    letters = set()
+    for value in lhs:
+        letters.update(value)
+    letters.update(rhs)
+    if len(letters) > 10:
+        print("Error: Too many unique letters for a cryptarithmetic problem (maximum 10)")
+        return None
 
+    def backtrack(idx, used_digits):
+        if idx == len(letters):
+            lhs_value = 0
+            for value in lhs:
+                for i, char in enumerate(value):
+                    lhs_value += used_digits[char] * (10 ** (len(value) - i - 1))
+            rhs_value = sum(used_digits[char] * (10 ** (len(rhs) - i - 1)) for i, char in enumerate(rhs))
+            return lhs_value == rhs_value 
+            
+            return lhs_value == rhs_value 
+        for digit in range(10):
+            if digit not in used_digits.values():
+                used_digits[list(letters)[idx]] = digit
+                if backtrack(idx + 1, used_digits):
+                    return True
+                used_digits[list(letters)[idx]] = None
+        return False
 
-if __name__ == '__main__':
-    n = int(input('enter no. of values '))
-    test = []
-    for i in range(n):
-        test.append(input(f'enter value {i + 1} '))
-    test.append(input('enter final value '))
-    keys = ''.join(test)
-    keys = set(keys)
-    keys = {x: -1 for x in keys}
-    cryptic(test, keys)
+    used_digits = {letter: None for letter in letters}
+    if backtrack(0, used_digits):
+        return {letter: digit for letter, digit in used_digits.items() if digit is not None}
+    else:
+        return None
+n=int(input(("enter no of lhs: ")))
+lhs=[]
+for i in range(n):
+    lhs.append(input("enter value: "))
+rhs=input("enter result: ")
+
+# lhs, rhs, result = "SEND", "MORE", "MONEY"
+solution = solve_cryptarithmetic(lhs, rhs)
+if solution:
+    print("Solution found:")
+    for letter, value in solution.items():
+        print(f"{letter}: {value}")
+else:
+    print("No solution found.")

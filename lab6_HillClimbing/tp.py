@@ -22,19 +22,22 @@ def gen_neighbors(state):
 
 def hill_climbing():
     n = 8
-    current_state = [0,1,2,3,4,5,6,7]
+    current_state = [random.randint(0, n - 1) for _ in range(n)]
+    print(current_state)
     path = [current_state.copy()]
     cost = [heuristic(current_state)]
 
     max_iter = 1000
     for _ in range(max_iter):
         neighbors = gen_neighbors(current_state)
-        neighbors = [neighbor for neighbor in neighbors if neighbor != current_state]
+        # neighbors = [neighbor for neighbor in neighbors if neighbor != current_state]
         if not neighbors:
             break
 
         best_neighbor = min(neighbors, key=heuristic)
+        print(best_neighbor)
         best_neighbors = [neighbor for neighbor in neighbors if heuristic(neighbor) == heuristic(best_neighbor)]
+        print(best_neighbors)
         current_state = random.choice(best_neighbors)
 
         path.append(current_state.copy())
