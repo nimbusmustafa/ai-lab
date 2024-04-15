@@ -101,18 +101,73 @@ class Graph:
 
 
 
-        for name, node in self.nodes.items():
-            print(f"Node name: {name}")
-            print(f"Neighbors:")
-            for neighbor_name, weight in node.neighbors.items():
-                print(f"  {neighbor_name}: {weight}")
-            print(f"Visited: {node.visited}")
-            print(f"g: {node.g}, h: {node.h}, f: {node.f}")
-            print(f"Previous: {node.previous}")    
+        # for name, node in self.nodes.items():
+        #     print(f"Node name: {name}")
+        #     print(f"Neighbors:")
+        #     for neighbor_name, weight in node.neighbors.items():
+        #         print(f"  {neighbor_name}: {weight}")
+        #     print(f"Visited: {node.visited}")
+        #     print(f"g: {node.g}, h: {node.h}, f: {node.f}")
+        #     print(f"Previous: {node.previous}")    
             
     def add_obstacle(self, node_name):
             if node_name in self.nodes:
                 del self.nodes[node_name]
+    def add_traffic(self, selected_locations):
+     for location in selected_locations:
+            row, col = location
+            node_name = f"{row},{col}"
+            current_node = self.nodes[node_name]
+
+
+            for neighbor_name in current_node.neighbors:
+                neighbor_row, neighbor_col = map(int, neighbor_name.split(','))
+
+                if (neighbor_row, neighbor_col) in selected_locations:
+                    # print(f"neighbour={neighbor_name}")
+
+                    neighbor_node = self.nodes.get(neighbor_name)
+                    if neighbor_node:
+                       
+                      current_node.add_neighbor(neighbor_name, 2 * current_node.neighbors[neighbor_name]) 
+                    #   neighbor_node.add_neighbor(node_name, 2 * current_node.neighbors[neighbor_name])
+
+            # selected_locations.append(location)
+            # print(selected_locations)
+
+    #  for name, node in self.nodes.items():
+    #         print(f"Node name: {name}")
+    #         print(f"Neighbors:")
+    #         for neighbor_name, weight in node.neighbors.items():
+    #             print(f"  {neighbor_name}: {weight}")
+    #         print(f"Visited: {node.visited}")
+    #         print(f"g: {node.g}, h: {node.h}, f: {node.f}")
+    #         print(f"Previous: {node.previous}")              
+    def add_highway(self, selected_locations):
+     for location in selected_locations:
+            row, col = location
+            node_name = f"{row},{col}"
+            current_node = self.nodes[node_name]
+
+
+            for neighbor_name in current_node.neighbors:
+                neighbor_row, neighbor_col = map(int, neighbor_name.split(','))
+
+                if (neighbor_row, neighbor_col) in selected_locations:
+                    # print(f"neighbour={neighbor_name}")
+
+                    neighbor_node = self.nodes.get(neighbor_name)
+                    if neighbor_node:
+                       
+                      current_node.add_neighbor(neighbor_name, 0.5 * current_node.neighbors[neighbor_name]) 
+     for name, node in self.nodes.items():
+      print(f"Node name: {name}")
+      print(f"Neighbors:")
+     for neighbor_name, weight in node.neighbors.items():
+        print(f"  {neighbor_name}: {weight}")
+        print(f"Visited: {node.visited}")
+        print(f"g: {node.g}, h: {node.h}, f: {node.f}")
+        print(f"Previous: {node.previous}")                  
 
 
     def heuristic(self, row1, col1, row2, col2):
@@ -174,6 +229,9 @@ class GridWindow(QWidget):
 
         self.selected_locations = set()
         self.obstacle_locations = set()
+        self.traffic_locations = []
+        self.highway_locations=[]
+
         self.current_destination = None
         self.final_destination = None
         self.graph = Graph(10,10)
@@ -183,13 +241,18 @@ class GridWindow(QWidget):
         self.create_select_current_destination_button()
         self.create_select_final_destination_button()
         self.create_traverse_button()
-
+        self.create_select_traffic_button()
+        self.create_select_highway_button()
     def create_grid_buttons(self):
         for row in range(10):
             for col in range(10):
                 button = QPushButton()
                 button.clicked.connect(lambda state, row=row, col=col: self.grid_button_clicked(row, col))
                 self.grid_layout.addWidget(button, row, col)
+    def create_select_highway_button(self):
+        select_final_destination_button = QPushButton("Select Highway")
+        select_final_destination_button.clicked.connect(self.highway_button_clicked)
+        self.grid_layout.addWidget(select_final_destination_button, 22, 50, 1, 10)
 
     def create_add_obstacle_button(self):
         add_obstacle_button = QPushButton("Add Obstacle")
@@ -211,6 +274,47 @@ class GridWindow(QWidget):
         traverse_button = QPushButton("Traverse")
         traverse_button.clicked.connect(self.traverse_button_clicked)
         self.grid_layout.addWidget(traverse_button, 22, 20, 1, 10)
+    def create_select_final_destination_button(self):
+        select_final_destination_button = QPushButton("Select Final Destination")
+        select_final_destination_button.clicked.connect(self.select_final_destination_button_clicked)
+        self.grid_layout.addWidget(select_final_destination_button, 22, 30, 1, 10)
+        
+    def create_select_traffic_button(self):
+        select_final_destination_button = QPushButton("Select Traffic")
+        select_final_destination_button.clicked.connect(self.traffic_button_clicked)
+        self.grid_layout.addWidget(select_final_destination_button, 22, 40, 1, 10)        
+   
+    def highway_button_clicked(self):
+        if not self.selected_locations:
+            QMessageBox.warning(self, "Warning", "Please select grid locations first.")
+            return
+        for location in self.selected_locations:
+            row,col =location
+            button = self.grid_layout.itemAtPosition(row,col).widget()
+            button.setStyleSheet("background-color: blue; color: white;")
+        self.highway_locations.extend(self.selected_locations)
+        print("Highway locations added:", self.highway_locations)
+
+        self.graph.add_highway(self.highway_locations)
+        self.selected_locations.clear()
+
+    def traffic_button_clicked(self):
+        if not self.selected_locations:
+            QMessageBox.warning(self, "Warning", "Please select grid locations first.")
+            return
+        for location in self.selected_locations:
+            row,col =location
+            button = self.grid_layout.itemAtPosition(row,col).widget()
+            button.setStyleSheet("background-color: red; color: white;")
+        self.traffic_locations.extend(self.selected_locations)
+        print("Traffic locations added:", self.traffic_locations)
+
+        self.graph.add_traffic(self.traffic_locations)
+
+        # print("Traffic locations added:", self.traffic_locations)
+        self.selected_locations.clear()
+
+
 
     def grid_button_clicked(self, row, col):
         location = (row, col)
@@ -236,7 +340,6 @@ class GridWindow(QWidget):
             button.setStyleSheet("background-color: black; color: white;")  
 
         self.selected_locations.clear()
-        print(self.graph.nodes)
         print("Obstacles added.")
 
     def select_current_destination_button_clicked(self):
@@ -248,7 +351,7 @@ class GridWindow(QWidget):
         print(f"Current destination selected: {self.current_destination}")
 
         button = self.grid_layout.itemAtPosition(self.current_destination[0], self.current_destination[1]).widget()
-        button.setStyleSheet("background-color: blue; color: white;")  
+        button.setStyleSheet("background-color: grey; color: white;")  
         self.selected_locations.clear()
 
     def select_final_destination_button_clicked(self):
@@ -260,7 +363,7 @@ class GridWindow(QWidget):
         print(f"Final destination selected: {self.final_destination}")
 
         button = self.grid_layout.itemAtPosition(self.final_destination[0], self.final_destination[1]).widget()
-        button.setStyleSheet("background-color: brown; color: white;")  
+        button.setStyleSheet("background-color: grey; color: white;")  
         self.selected_locations.clear()
 
     def traverse_button_clicked(self):
