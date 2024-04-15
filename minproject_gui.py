@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QGridLayout, QMessageBox
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QGridLayout, QMessageBox, QLabel
 import math
 import heapq
 
@@ -243,6 +243,8 @@ class GridWindow(QWidget):
         self.create_traverse_button()
         self.create_select_traffic_button()
         self.create_select_highway_button()
+        self.create_cost_label()  
+
     def create_grid_buttons(self):
         for row in range(10):
             for col in range(10):
@@ -250,40 +252,35 @@ class GridWindow(QWidget):
                 button.clicked.connect(lambda state, row=row, col=col: self.grid_button_clicked(row, col))
                 self.grid_layout.addWidget(button, row, col)
     def create_select_highway_button(self):
-        select_final_destination_button = QPushButton("Select Highway")
-        select_final_destination_button.clicked.connect(self.highway_button_clicked)
-        self.grid_layout.addWidget(select_final_destination_button, 22, 50, 1, 10)
+        select_highway_button = QPushButton("Select Highway")
+        select_highway_button.clicked.connect(self.highway_button_clicked)
+        self.grid_layout.addWidget(select_highway_button, 10, 0, 1, 5)
 
     def create_add_obstacle_button(self):
         add_obstacle_button = QPushButton("Add Obstacle")
         add_obstacle_button.clicked.connect(self.add_obstacle_button_clicked)
-        self.grid_layout.addWidget(add_obstacle_button, 20, 0, 1, 20)
-
+        self.grid_layout.addWidget(add_obstacle_button, 10, 5, 1, 5)
 
     def create_select_current_destination_button(self):
         select_current_destination_button = QPushButton("Select Current Destination")
         select_current_destination_button.clicked.connect(self.select_current_destination_button_clicked)
-        self.grid_layout.addWidget(select_current_destination_button, 22, 0, 1, 10)
+        self.grid_layout.addWidget(select_current_destination_button, 12, 0, 1, 5)
 
     def create_select_final_destination_button(self):
         select_final_destination_button = QPushButton("Select Final Destination")
         select_final_destination_button.clicked.connect(self.select_final_destination_button_clicked)
-        self.grid_layout.addWidget(select_final_destination_button, 22, 10, 1, 10)
+        self.grid_layout.addWidget(select_final_destination_button, 12, 5, 1, 5)
 
     def create_traverse_button(self):
         traverse_button = QPushButton("Traverse")
         traverse_button.clicked.connect(self.traverse_button_clicked)
-        self.grid_layout.addWidget(traverse_button, 22, 20, 1, 10)
-    def create_select_final_destination_button(self):
-        select_final_destination_button = QPushButton("Select Final Destination")
-        select_final_destination_button.clicked.connect(self.select_final_destination_button_clicked)
-        self.grid_layout.addWidget(select_final_destination_button, 22, 30, 1, 10)
-        
+        self.grid_layout.addWidget(traverse_button, 14, 0, 1, 5)
+
     def create_select_traffic_button(self):
-        select_final_destination_button = QPushButton("Select Traffic")
-        select_final_destination_button.clicked.connect(self.traffic_button_clicked)
-        self.grid_layout.addWidget(select_final_destination_button, 22, 40, 1, 10)        
-   
+        select_traffic_button = QPushButton("Select Traffic")
+        select_traffic_button.clicked.connect(self.traffic_button_clicked)
+        self.grid_layout.addWidget(select_traffic_button, 14, 5, 1, 5)
+
     def highway_button_clicked(self):
         if not self.selected_locations:
             QMessageBox.warning(self, "Warning", "Please select grid locations first.")
@@ -341,6 +338,9 @@ class GridWindow(QWidget):
 
         self.selected_locations.clear()
         print("Obstacles added.")
+    def create_cost_label(self):
+        self.cost_label = QLabel()
+        self.grid_layout.addWidget(self.cost_label, 16, 0, 1, 5)  # Span the label across the entire grid
 
     def select_current_destination_button_clicked(self):
         if not self.selected_locations:
@@ -378,6 +378,8 @@ class GridWindow(QWidget):
             for path, total_cost in shortest_paths:
                 print(f"Path: {' -> '.join(path)}")
                 print(f"Total cost: {total_cost}")
+                self.cost_label.setText(f"Total cost: {total_cost}")  
+
                 for node_name in path:
                  row, col = map(int, node_name.split(','))
                  button = self.grid_layout.itemAtPosition(row, col).widget()
