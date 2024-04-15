@@ -1,7 +1,7 @@
 class Graph:
     def __init__(self, edges, n):
         self.adj_list = [] 
-        for x in range(n): 
+        for _ in range(n): 
             self.adj_list.append([]) 
         for (src, dest) in edges:
             self.adj_list[src].append(dest)

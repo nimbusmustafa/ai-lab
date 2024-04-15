@@ -20,7 +20,7 @@ def genlist(x, y, max_x, max_y):
     return adList
 
 def bfs(max_x, max_y, target):
-    queue, source = [[(0, 0), [(0, 0)]]], (0, 0)
+    queue = [((0, 0), [(0, 0)])]
     while queue:
         curr = queue.pop(0)
         if curr[0] == target:
@@ -30,7 +30,7 @@ def bfs(max_x, max_y, target):
             return
         adList = genlist(curr[0][0], curr[0][1], max_x, max_y)
         for x in adList:
-            path = [step for step in curr[1]]
+            path = curr[1].copy()
             path.append(x)
             node = [x, path]
             # print(node)

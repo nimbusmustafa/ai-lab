@@ -24,9 +24,7 @@ class MazeSolver:
                     queue.append(((new_row, new_col), current_path + [current_pos]))
                     self.visited.append((new_row, new_col))
 
-        return None  # If no path is found
-
-# Example usage:
+        return None  
 maze = [
     [0, 1, 0, 0, 0],
     [0, 0, 0, 1, 0],

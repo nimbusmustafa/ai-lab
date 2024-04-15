@@ -16,13 +16,13 @@ def solve_cryptarithmetic(lhs, rhs):
             rhs_value = sum(used_digits[char] * (10 ** (len(rhs) - i - 1)) for i, char in enumerate(rhs))
             return lhs_value == rhs_value 
             
-            return lhs_value == rhs_value 
         for digit in range(10):
             if digit not in used_digits.values():
                 used_digits[list(letters)[idx]] = digit
                 if backtrack(idx + 1, used_digits):
                     return True
-                used_digits[list(letters)[idx]] = None
+                else:
+                    used_digits[list(letters)[idx]] = None
         return False
 
     used_digits = {letter: None for letter in letters}
@@ -30,6 +30,9 @@ def solve_cryptarithmetic(lhs, rhs):
         return {letter: digit for letter, digit in used_digits.items() if digit is not None}
     else:
         return None
+    
+
+    
 n=int(input(("enter no of lhs: ")))
 lhs=[]
 for i in range(n):

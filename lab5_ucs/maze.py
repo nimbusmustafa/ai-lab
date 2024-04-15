@@ -3,7 +3,7 @@ class MazeSolverUCS:
         self.maze = maze
         self.rows = len(maze)
         self.cols = len(maze[0])
-        self.directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]  # Right, Left, Down, Up
+        self.directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]  
 
     def is_valid_move(self, row, col):
         return 0 <= row < self.rows and 0 <= col < self.cols and self.maze[row][col] == 0
@@ -18,11 +18,11 @@ class MazeSolverUCS:
         return neighbors
 
     def ucs(self, start, end):
-        queue = [(0, start, [])]  # (cost, position, path)
+        queue = [(0, start, [])]  
         visited = set()
 
         while queue:
-            queue.sort()  # Sort by cost (ascending)
+            queue.sort()  
             cost, current, path = queue.pop(0)
 
             if current == end:
@@ -33,7 +33,7 @@ class MazeSolverUCS:
             visited.add(current)
 
             for neighbor in self.get_neighbors(current):
-                new_cost = cost + 1  # Uniform cost of 1 for each step
+                new_cost = cost + 1  
                 new_path = path + [current]
                 queue.append((new_cost, neighbor, new_path))
 

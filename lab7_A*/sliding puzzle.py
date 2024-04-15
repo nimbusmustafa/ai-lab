@@ -39,7 +39,7 @@ class PuzzleSolver:
         sum=0
         for i in range(3):
             for j in range(3):
-                if state[i][j] == self.goal_state[i][j]:
+                if state[i][j] != self.goal_state[i][j]:
                     sum+=1
 
         return sum

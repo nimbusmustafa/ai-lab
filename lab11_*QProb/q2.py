@@ -11,9 +11,8 @@ class NQueens:
         queue.append([])
         while queue:
             solution = queue.pop(0)
-            print(solution)
+            # print(solution)
             if self.conflict(solution):
-                print("loda")
                 continue
             row = len(solution)
             if row == self.size:
@@ -26,10 +25,11 @@ class NQueens:
                 queens = solution.copy()
                 queens.append(queen)
                 queue.append(queens)
-                print(f"queue= {queue}")
+                # print(f"queue= {queue}")
         return solutions
 
     def conflict(self, queens):
+        print(queens)
         for i in range(1, len(queens)):
             for j in range(0, i):
                 a, b = queens[i]

@@ -3,7 +3,7 @@ class AStar:
         self.maze = maze
         self.rows = len(maze)
         self.cols = len(maze[0])
-        self.directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]  # Right, Left, Down, Up
+        self.directions = [(0, 1), (0, -1), (1, 0), (-1, 0)]  
 
     def is_valid_move(self, row, col):
         return 0 <= row < self.rows and 0 <= col < self.cols and self.maze[row][col] == 0
@@ -12,11 +12,11 @@ class AStar:
         return abs(current[0] - end[0]) + abs(current[1] - end[1])  # Manhattan distance
 
     def a_star(self, start, end):
-        queue = [(0, start, [])]  # (f-value, position, path)
+        queue = [(0, start, [])]  
         visited = set()
 
         while queue:
-            queue.sort()  # Sort by f-value (ascending)
+            queue.sort() 
             _, current, path = queue.pop(0)
 
             if current == end:
@@ -24,6 +24,7 @@ class AStar:
 
             if current in visited:
                 continue
+            
             visited.add(current)
 
             for dr, dc in self.directions:
@@ -33,9 +34,9 @@ class AStar:
                     f = len(new_path) + self.heuristic((new_row, new_col), end)
                     queue.append((f, (new_row, new_col), new_path))
 
-        return None  # If no path is found
+        return None  
 
-# Example usage:
+
 maze = [
     [0, 1, 0, 0, 0],
     [0, 0, 0, 1, 0],

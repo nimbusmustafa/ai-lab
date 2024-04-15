@@ -18,13 +18,14 @@ def gen_neighbors(state):
                 neighbor = state.copy()
                 neighbor[col] = row
                 neighbors.append(neighbor)
+    # print(neighbors)            
     return neighbors
 
 def hill_climbing():
     n = 8
     current_state = [random.randint(0, n - 1) for _ in range(n)]
     print(current_state)
-    path = [current_state.copy()]
+    # path = [current_state.copy()]
     cost = [heuristic(current_state)]
 
     max_iter = 1000
@@ -35,20 +36,20 @@ def hill_climbing():
             break
 
         best_neighbor = min(neighbors, key=heuristic)
-        print(best_neighbor)
+        # print(best_neighbor)
         best_neighbors = [neighbor for neighbor in neighbors if heuristic(neighbor) == heuristic(best_neighbor)]
-        print(best_neighbors)
+        # print(best_neighbors)
         current_state = random.choice(best_neighbors)
 
-        path.append(current_state.copy())
+        # path.append(current_state.copy())
         cost.append(heuristic(current_state))
 
         if heuristic(current_state) == 0:
             break
 
-    return current_state, path, cost
+    return current_state, cost
 
-solution, path, cost = hill_climbing()
+solution, cost = hill_climbing()
 print("Solution:", solution)
 # print("Path:", path)
 print("Cost:", cost[-1])
