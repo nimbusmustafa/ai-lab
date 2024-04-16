@@ -221,8 +221,8 @@ class Graph:
 class GridWindow(QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Grid Selection")
-        self.setGeometry(100, 100, 800, 600)
+        self.setWindowTitle("City Navigation")
+        self.setGeometry(100, 100, 800, 500)
 
         self.grid_layout = QGridLayout()
         self.setLayout(self.grid_layout)
